@@ -13,7 +13,7 @@ $.getJSON("dungeon.json",function(data)
 $.each(data.dungeonlist, function(i,data)
 {
 var div_data =
-"<div ><ul><li><em>Dungeon Name:  </em>"+data.dungeon_name+"</li> <li>Dungeon Type:  "+data.dungeon_type+"</li> <li>Location:  "+data.location+"</li> <li>Date Found:  "+data.date_found+"</li> <li>Is it Populated?  "+data.populated+"</li> <li>Are the Occupants Friendly?  "+data.friendly+"</li> <li>Occupant Type:  "+data.occupant+"</li> <li>Occupant Category:  "+data.category+"</li> <li>Loot Rating:  "+data.loot_rating+"</li> <li>Is There Loot Here?  "+data.no_loot_here+"</li> <li>Notes:  "+data.notes+"</li></ul></div> <br />";
+"<div ><ul><li><b>Dungeon Name:  </b>"+data.dungeon_name+"</li> <li><b>Dungeon Type:  </b>"+data.dungeon_type+"</li> <li><b>Location:  </b>"+data.location+"</li> <li><b>Date Found:  </b>"+data.date_found+"</li> <li><b>Is it Populated?  </b>"+data.populated+"</li> <li><b>Are the Occupants Friendly?  </b>"+data.friendly+"</li> <li><b>Occupant Type:  </b>"+data.occupant+"</li> <li><b>Occupant Category:  </b>"+data.category+"</li> <li><b>Loot Rating:  </b>"+data.loot_rating+"</li> <li><b>Is There Loot Here?  </b>"+data.no_loot_here+"</li> <li><b>Notes:  </b>"+data.notes+"</li></ul></div> <br />";
 $(div_data).appendTo("#dungeons");
 });
 }
