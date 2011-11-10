@@ -1,0 +1,10 @@
+{
+  "env": {
+    "local": {
+      "db": "http://127.0.0.1:5984/dungeonproject"
+    },  
+    "cloudant": {
+      "db": "https://toredstriblerlifingunded:UCgFkgv4n2e7rs8wWnxs3Gye@carolynlea.cloudant.com/dungeonproject"
+    }  
+  }
+}
