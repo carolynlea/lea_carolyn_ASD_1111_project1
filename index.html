@@ -41,7 +41,7 @@
 	{
 	var div_data =
 	"<div ><ul><li><b>Dungeon Name:  </b>"+data.dungeon_name+"</li> <li><b>Dungeon Type:  </b>"+data.dungeon_type+"</li> <li><b>Location:  </b>"+data.location+"</li> <li><b>Date Found:  </b>"+data.date_found+"</li> <li><b>Is it Populated?  </b>"+data.populated+"</li> <li><b>Are the Occupants Friendly?  </b>"+data.friendly+"</li> <li><b>Occupant Type:  </b>"+data.occupant+"</li> <li><b>Occupant Category:  </b>"+data.category+"</li> <li><b>Loot Rating:  </b>"+data.loot_rating+"</li> <li><b>Is There Loot Here?  </b>"+data.no_loot_here+"</li> <li><b>Notes:  </b>"+data.notes+"</li></ul></div> <br />";
-	$(div_data).appendTo("#dungeons");
+	$(div_data).appendTo("#jsondungeons");
 	});
 	}
 	);
@@ -49,6 +49,93 @@
 	});
 	});
 	</script>
+	
+	
+	<script>
+	$(document).ready(function() {
+	$.ajax({
+	type:"GET",
+	url:"dungeon.xml",
+	dataType:"xml",
+	success: function (dunglist) {
+	var dung="<ul>";
+	$(dunglist).find('found').each(function(){
+	var type = $(this).find('type').text()
+	var name = $(this).find('name').text()
+	var location = $(this).find('location').text()
+	var date = $(this).find('date').text()
+	var populated = $(this).find('populated').text()
+	var friendly = $(this).find('friendly').text()
+	var occupant = $(this).find('occupant').text()
+	var category = $(this).find('category').text()
+	var lootrating = $(this).find('lootrating').text()
+	var noloothere = $(this).find('noloothere').text()
+	var notes = $(this).find('notes').text()
+	dung+="<li><b>Type:  </b>"+type+"</li>";
+	dung+="<li><b>Name:  </b>"+name+"</li>";
+	dung+="<li><b>Location:  </b>"+location+"</li>";
+	dung+="<li><b>Date:  </b>"+date+"</li>";
+	dung+="<li><b>Populated:  </b>"+populated+"</li>";
+	dung+="<li><b>Friendly:  </b>"+friendly+"</li>";
+	dung+="<li><b>Occupant:  </b>"+occupant+"</li>";
+	dung+="<li><b>Category:  </b>"+category+"</li>";
+	dung+="<li><b>Loot Rating:  </b>"+lootrating+"</li>";
+	dung+="<li><b>No Loot Here:  </b>"+noloothere+"</li>";
+	dung+="<li><b>Notes:  </b>"+notes+"</li>";
+	dung+="<br/>";
+	});
+	dung+="</ul>";
+	$('#xmldungeons').append(dung);
+	}
+	});
+	return false;
+	});
+
+	</script>
+	
+<!--	<script>
+	$(document).ready(function() {
+	    $.ajax({
+	        type: "GET",
+	        url: "dungeon.txt",
+	        dataType: "text",
+	        success: function(data) {processData(data);}
+	     });
+	});
+
+	function processData(allText) {
+	    var allTextLines = allText.split(/\r\n|\n/);
+	    var name = allTextLines[0].split(',');
+		var type = allTextLines[1].split(',');
+		var location = allTextLines[2].split(',');
+		var date = allTextLines[3].split(',');
+		var populated = allTextLines[4].split(',');
+		var friendly = allTextLines[5].split(',');
+		var occupant = allTextLines[6].split(',');
+		var category = allTextLines[7].split(',');
+		var lootrating = allTextLines[8].split(',');
+		var noloothere = allTextLines[9].split(',');
+		var notes = allTextLines[10].split(',');
+	    var lines = [];
+
+	    for (var i=1; i<allTextLines.length; i++) {
+	        var data = allTextLines[i].split(',');
+	        if (data.length == name.length) {
+
+	            var list = [];
+	            for (var j=0; j<name.length; j++) {
+	                list.push(name[j]+": "+data[j]+"</br>");
+
+
+	            }
+	            lines.push(list);
+	        }
+	    }
+	    document.write(lines);
+	}
+
+
+	</script> -->
 </head>
 
 <body>
@@ -1238,7 +1325,7 @@
 				</div>
 
 				<div data-role="content" class="content">
-					<p><a href="jsondungeon.html" data-rel="dialog" data-theme="e">Click to see JSON data.</a></p>
+					
 				</div>
 
 			</div>
@@ -1249,7 +1336,7 @@
 					<h1>XML DATA</h1>
 				</div>
 
-				<div data-role="content">
+				<div data-role="content" class="content">
 					
 				</div>
 
