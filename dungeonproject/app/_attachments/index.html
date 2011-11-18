@@ -1,26 +1,174 @@
+<!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	
-	
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.js"></script>
+  <head>
+    <title>Dungeon tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+    <link rel="stylesheet" href="main.css" type="text/css">
+    <script src="json2.js"></script>
+    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+    <script src="jquery.couch.js?0.9.0"></script>
+<script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+    <script type="text/javascript">
+      $db = $.couch.db("dungeonproject");
+    
+              function refreshDungeonproject(){
+        $("div#dungeonpage").empty();
+        $db.view("dungeonproject/dungeons", {
+           success: function(data){
+            for (i in data.rows) {
+              id = data.rows[i].id;
+              dname = data.rows[i].value.dungeon_name;
+              dlocation = data.rows[i].value.location;
+			  dfound = data.rows[i].value.date_found;
+			  dtype = data.rows[i].value.dungeon_type;
+			  dpop = data.rows[i].value.populated;
+			  dfriend = data.rows[i].value.friendly;
+			  docc = data.rows[i].value.occupant;
+			  dcat = data.rows[i].value.category;
+			  dlootr = data.rows[i].value.loot_rating;
+			  dnlhere = data.rows[i].value.no_loot_here;
+			  dnotes = data.rows[i].value.notes;	
+              html = '<div id="address">' + '<ul>' +
+              '<li class="dname"><b>Dungeon Name:</b> ' + dname + '</li>' +
+              '<li class="dlocation"><b>Location:</b> ' + dlocation + '</li> ' +
+			  '<li class="dfound"><b>Date Found:</b> ' + dfound + '</li>' +
+			  '<li class="dtype"><b>Dungeon Type:</b> ' + dtype + '</li>' +
+			  '<li class="dpop"><b>Populated?:</b> ' + dpop + '</li>' +
+			  '<li class="dfriend"><b>Friendly?:</b> ' + dfriend + '</li>' +
+			  '<li class="docc"><b>Occupant:</b> ' + docc + '</li>' +
+			  '<li class="dcat"><b>Category:</b> ' + dcat + '</li>' +
+			  '<li class="dlootr"><b>Loot Rating:</b> ' + dlootr + '</li>' +
+			  '<li class="dnlhere"><b>No Loot Here?:</b> ' + dnlhere + '</li>' +
+			  '<li class="dnotes"><b>Notes:</b> ' + dnotes + '</li>' +
+              '<a href="#" id="' + id + '" class="edit">edit</a>&nbsp;|&nbsp;' +
+              '<a href="#" id="' + id + '" class="delete">delete</a>' + '</ul>'
+              '</div>';
+              $("div#dungeonpage").append(html);
 
- 
-</head>
-<body>
-	<div data-role="page" id="home">
-		<div data-role="header" data-position="fixed">
-			<h1>Home</h1>
-		</div>
-		<div data-role="content" class="ui-body-a">
-			<ul id="dungeonlist" data-role="listview"></ul>
-		</div>
-	</div>
-<script src="main.js"></script>	
-</body>
+           }
+          }
+        });
+      }
+
+
+      function addUpdateForm(target, existingDoc) {
+       html = '<form name="update" id="update" action=""><table>' +
+       '<tr>' +
+       '<tr><td>Dungeon Name</td></tr>' + '<td><input type="text" name="dungeon_name" id="dungeon_name" value="' +
+       (existingDoc ? existingDoc.dungeon_name : "" ) + '"></td>' +
+       '<tr><td>Location</td></tr>' + '<td><input type="text" name="location" id="location" value="' +
+       (existingDoc ? existingDoc.location : "") + '"></td>' +
+       '<tr><td>Date Found</td></tr>' + '<td><input type="text" name="date_found" id="date_found" value="' +
+	   (existingDoc ? existingDoc.date_found : "") + '"></td>' +
+	   '<tr><td>Dungeon Type</td></tr>' + '<td><input type="text" name="dungeon_type" id="dungeon_type" value="' +
+	   (existingDoc ? existingDoc.dungeon_type : "") + '"></td>' +
+	   '<tr><td>Populated?</td></tr>' + '<td><input type="text" name="populated" id="populated" value="' +
+	   (existingDoc ? existingDoc.populated : "") + '"></td>' +
+	   '<tr><td>Friendly?</td></tr>' + '<td><input type="text" name="friendly" id="friendly" value="' +
+	   (existingDoc ? existingDoc.friendly : "") + '"></td>' +
+	   '<tr><td>Occupant</td></tr>' + '<td><input type="text" name="occupant" id="occupant" value="' +
+	   (existingDoc ? existingDoc.occupant : "") + '"></td>' +
+	   '<tr><td>Category</td></tr>' + '<td><input type="text" name="category" id="category" value="' +
+	   (existingDoc ? existingDoc.category : "") + '"></td>' +
+	   '<tr><td>Loot Rating</td></tr>' + '<td><input type="text" name="loot_rating" id="loot_rating" value="' +
+	   (existingDoc ? existingDoc.loot_rating : "") + '"></td>' +
+	   '<tr><td>No Loot Here?</td></tr>' + '<td><input type="text" name="no_loot_here" id="no_loot_here" value="' +
+	   (existingDoc ? existingDoc.no_loot_here : "") + '"></td>' +
+	   '<tr><td>Notes</td></tr>' + '<td><input type="text" name="notes" id="notes" value="' +
+	   (existingDoc ? existingDoc.notes : "") + '"></td>' +
+       '</tr><tr>' +
+       '<td><input type="submit" name="submit" class="update" value="' +
+       (existingDoc ? "Update" : "Add") + '"></td>' +
+       '<td><input type="submit" name="cancel" class="cancel" value="Cancel"/></td>' +
+       '</tr>' +
+       '</table></form>';
+       target.append(html);
+       target.children("form#update").data("existingDoc", existingDoc);
+      }
+
+      $(document).ready(function() {
+        refreshDungeonproject();
+
+
+$("div#dungeonpage").click(function(event) {
+          var $tgt = $(event.target);
+
+          if ($tgt.is('a')) {
+            id = $tgt.attr("id");
+            if ($tgt.hasClass("edit")){
+              if ($tgt.hasClass("edit")) {
+               $("button#add").show();
+               $("form#update").remove();
+               $db.openDoc(id, { success: function(doc) {
+               addUpdateForm($tgt.parent(), doc);
+               }});
+              }
+            }
+
+            if ($tgt.hasClass("delete")){
+              html = '&nbsp;<span class="deleteconfirm">Sure? <a href="#" id="' + id + '" class="dodelete">Yes</a> <a href="#" class="canceldelete">No</a></span>';
+              $tgt.parent().append(html);
+            }
+
+            if ($tgt.hasClass("dodelete")){
+              $db.openDoc(id, { success: function(doc) {
+                $db.removeDoc(doc, { success: function(){
+                  $tgt.parents("div.address").remove();
+                }})
+              }});
+            }
+
+            if ($tgt.hasClass("canceldelete")) {
+              $tgt.parents("span.deleteconfirm").remove();
+            }
+          }
+        });
+
+        $("button#add").click(function(event) {
+         $("form#update").remove();
+         $("button#add").hide();
+         addUpdateForm($("div#add"));
+        });
+
+		$("input.cancel").live('click', function(event) {
+         $("button#add").show();
+         $("form#update").remove();
+         return false;
+        });
+
+		$("input.update").live('click', function(event) {
+         var $tgt = $(event.target);
+         var $form = $tgt.parents("form#update");
+         var $doc = $form.data('existingDoc') || {};
+
+		$doc.type = "address";
+        $doc.dungeon_name = $form.find("input#dungeon_name").val();
+        $doc.location = $form.find("input#location").val();
+        $doc.date_found = $form.find("input#date_found").val();
+        $doc.dungeon_type = $form.find("input#dungeon_type").val();
+        $doc.populated = $form.find("input#populated").val();
+        $doc.friendly = $form.find("input#friendly").val();
+        $doc.occupant = $form.find("input#occupant").val();
+        $doc.category = $form.find("input#category").val();
+        $doc.loot_rating = $form.find("input#loot_rating").val();
+        $doc.no_loot_here = $form.find("input#no_loot_here").val();
+        $doc.notes = $form.find("input#notes").val();
+        $db.saveDoc(
+        $doc, { success: function(){
+        $("button#add").show();
+        $("form#update").remove();
+         refreshDungeonproject();
+         }
+         });
+         return false;
+        })
+      });
+    </script>
+  </head>
+  <body><br />
+    <center><h1 id="simple_dungeon_tracker">Dungeons</h1></center>
+    <div id="add"><button type="button" id="add">Add New Dungeon</button></div>
+    <div id="dungeonpage" data-role="listview"></div>
+  </body>
 </html>
